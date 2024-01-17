@@ -5,7 +5,7 @@
 #include <ctime>
 using namespace std;
 
-//Criação da classe
+//Criação da classe mesa
 class mesa{
     private:
         //Atributos
@@ -32,52 +32,57 @@ class mesa{
         static int getMesasEsperando();
         static time_t getSomaEspera();
         const time_t * getPtrChegada() const;
+        void resetGeradorId();
 };
 
-    //Inicializações
-    int mesa::GeradorId = 0;
-    int mesa::MesasEsperando = 0;
-    time_t mesa::SomaEspera = 0;
+//Inicializações
+int mesa::GeradorId = 0;
+int mesa::MesasEsperando = 0;
+time_t mesa::SomaEspera = 0;
 
-    //Construtor
-    mesa::mesa(int cQtdPessoas = 0) : QtdPessoas(cQtdPessoas), TempoChegada(time(nullptr)), IdMesa(++GeradorId){
-        MesasEsperando++;
-    }
+//Construtor
+mesa::mesa(int cQtdPessoas = 0) : QtdPessoas(cQtdPessoas), TempoChegada(time(nullptr)), IdMesa(++GeradorId){
+    MesasEsperando++;
+}
 
-    //Destrutor
-    mesa::~mesa(){
-        TempoEspera = difftime(time(nullptr), TempoChegada);
-        SomaEspera = SomaEspera + TempoEspera;
-        MesasEsperando--;
-    }
+//Destrutor
+mesa::~mesa(){
+    TempoEspera = difftime(time(nullptr), TempoChegada);
+    SomaEspera = SomaEspera + TempoEspera;
+    MesasEsperando--;
+}
 
-    //Métodos get
-    int mesa::getId() const{
-        return IdMesa;
-    }
+//Métodos get
+int mesa::getId() const{
+    return IdMesa;
+}
 
-    int mesa::getPessoas() const{
-        return QtdPessoas;
-    }
+int mesa::getPessoas() const{
+    return QtdPessoas;
+}
 
-    time_t mesa::getChegada() const{
-        return TempoChegada;
-    }
+time_t mesa::getChegada() const{
+    return TempoChegada;
+}
 
-    time_t mesa::getEspera() const{
-        return TempoEspera;
-    }
+time_t mesa::getEspera() const{
+    return TempoEspera;
+}
 
-    int mesa::getMesasEsperando(){
-        return MesasEsperando;
-    }
+int mesa::getMesasEsperando(){
+    return MesasEsperando;
+}
 
-    time_t mesa::getSomaEspera(){
-        return SomaEspera;
-    }
+time_t mesa::getSomaEspera(){
+    return SomaEspera;
+}
 
-    const time_t * mesa::getPtrChegada() const{
-        return &TempoChegada;
-    }
+const time_t * mesa::getPtrChegada() const{
+    return &TempoChegada;
+}
+
+void mesa::resetGeradorId(){
+    GeradorId = 0;
+}
 
 #endif

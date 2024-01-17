@@ -38,7 +38,7 @@ Valor de Retorno:
     list list - Uma lista inicializada
 */
 list Create(){
-    //Vairáveis locais
+    //Variáveis locais
     list list;
 
     //Inicializando a lista
