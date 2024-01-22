@@ -64,20 +64,9 @@ mesa::~mesa(){
         MediaSegundos = segundos;
     }
     else{
-        if((MediaMinutos + minutos) % 2 == 0){
-            MediaMinutos = (MediaMinutos + minutos) / 2;
-            MediaSegundos = (MediaSegundos + segundos) / 2;
-        }
-        else{
-            if(((MediaSegundos + segundos) / 2) > 29){
-                MediaMinutos = ((MediaMinutos + minutos) / 2);
-                MediaSegundos = ((MediaSegundos + segundos) / 2) + 30;
-            }
-            else{
-                MediaMinutos = ((MediaMinutos + minutos) / 2) + 1;
-                MediaSegundos = ((MediaSegundos + segundos) / 2) - 30;
-            }
-        }
+        MediaSegundos = (MediaSegundos + segundos + MediaMinutos * 60 + minutos * 60) / 2;
+        MediaMinutos = (int)((MediaSegundos) / 60);
+        MediaSegundos = MediaSegundos - (MediaMinutos * 60);
     }
 }
 

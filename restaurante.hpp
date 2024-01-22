@@ -11,6 +11,7 @@ class restaurante{
     private:
         //Atributos
         list lista;
+        int tela;
 
     public:
         //Construtor
@@ -26,6 +27,8 @@ class restaurante{
         void ExibeMesas();
         void PesquisaMesa();
         void ExibeTempoMedioEspera();
+        void LimpaTela(int);
+        void setTela();
 };
 
 //Protótipos das funções utilizadas na função menu
@@ -66,16 +69,17 @@ Valores de Retorno:
 */
 void ExibeMenu(){
     cout << endl;
-    cout << "           OPERACOES DISPONIVEIS           " << endl;
-    cout << "1: Menu de operacoes......................." << endl;
-    cout << "2: Remover uma mesa........................" << endl;
-    cout << "3: Adicionar uma mesa......................" << endl;
-    cout << "4: Pesquisar uma mesa pelo ID.............." << endl;
-    cout << "5: Exibir tempo medio de espera............" << endl;
-    cout << "6: Exibir todas as mesas registradas......." << endl;
-    cout << "7: Exibir total de mesas registradas......." << endl;
-    cout << "8: Apagar todos os registros (reset) ......" << endl;
-    cout << "9: Sair...................................." << endl;
+    cout << "             OPERACOES DISPONIVEIS             " << endl;
+    cout << "1:  Menu de operacoes..........................." << endl;
+    cout << "2:  Remover uma mesa............................" << endl;
+    cout << "3:  Adicionar uma mesa.........................." << endl;
+    cout << "4:  Pesquisar uma mesa pelo ID.................." << endl;
+    cout << "5:  Exibir tempo medio de espera................" << endl;
+    cout << "6:  Exibir todas as mesas registradas..........." << endl;
+    cout << "7:  Exibir total de mesas registradas..........." << endl;
+    cout << "8:  Apagar todos os registros (reset) .........." << endl;
+    cout << "9:  Configuracoes de exibicao..................." << endl;
+    cout << "10: Sair........................................" << endl;
 }
 
 //Construtor
@@ -99,49 +103,90 @@ Valores de Retorno:
 void restaurante::PerfilOperador(){
     //Variáveis locais
     int seletor;
+    clock_t tempoF, tempoC;
 
     //Exibindo o menu de ações disponíveis
     ExibeMenu();
 
+    //Inicializando a configuração da exibição
+    tela = 0;
+
     do{
         //Coletando a ação escolhida
-        //cout << endl << "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
-        //cout << endl << "-------------------------------------------";
-        cout << "___________________________________________";
+        cout << "________________________________________________";
         cout << endl << "Operacao desejada: ";
-        seletor = getEscolha(1, 9);
+        seletor = getEscolha(1, 10);
         //Realizando a ação
         switch (seletor){
         case 1:
+            LimpaTela(seletor);
             ExibeMenu();
             break;
         case 2:
+            LimpaTela(seletor);
             RemoveMesa();
             break;
         case 3:
+            LimpaTela(seletor);
             AdicionaMesa();
             break;
         case 4:
+            LimpaTela(seletor);
             PesquisaMesa();
             break;
         case 5:
+            LimpaTela(seletor);
             ExibeTempoMedioEspera();
             break;
         case 6:
+            LimpaTela(seletor);
             ExibeMesas();
             break;
         case 7:
+            LimpaTela(seletor);
             cout << endl << "Total de mesas registradas: " << lista.first->info->getMesasEsperando() << endl;
             break;
         case 8:
+            LimpaTela(seletor);
+            cout << "Reset realizado!" << endl;
             lista.first->info->resetGeradorId();
             Destroy(&lista);
             break;
+        case 9:
+            LimpaTela(seletor);
+            setTela();
+            break;
         default:
-            cout << "Encerrando!";
+            system("cls");
+            Destroy(&lista);
+            cout << endl << "Encerrando em 3!";
+            tempoF = time(nullptr);
+
+            do{
+                tempoC = time(nullptr);
+            }while(tempoC - tempoF < 2);
+
+            system("cls");
+            cout << endl << "Encerrando em 2!";
+            do{
+                tempoC = time(nullptr);
+            }while(tempoC - tempoF < 3);
+
+            system("cls");
+            cout << endl << "Encerrando em 1!";
+            do{
+                tempoC = time(nullptr);
+            }while(tempoC - tempoF < 4);
+
+            system("cls");
+            cout << endl << "Encerrando em 0!";
+            do{
+                tempoC = time(nullptr);
+            }while(tempoC - tempoF < 4.25);
+            system("cls");
             break;
         }
-    }while(seletor != 9);
+    }while(seletor != 10);
 }
 
 /*
@@ -181,12 +226,13 @@ void restaurante::RemoveMesa(){
     //Variáveis locais
     int ID;
     int minutos;
+    int verifica;
     float segundos;
     clock_t tempo;
     clock_t diferenca;
 
     if(Empty(lista)){
-        cout << endl << "ERRO: Nao existem mesas registradas, nao e possivel remover uma mesa" << endl;
+        cout << endl << "ERRO: Nao existem mesas registradas, nao e possivel remover uma mesa!" << endl;
     }
     else{
         //Coletando o ID da mesa que será removida
@@ -198,31 +244,46 @@ void restaurante::RemoveMesa(){
         Take(ID, &lista);
         tempo = lista.current->info->getChegada();
 
-        if(Remove(ID, &lista)){                                //Se a mesa for removida
-            cout << "Mesa removida!" << endl;
-            cout << "Tempo de espera da mesa: ";
-            diferenca = clock() - tempo;
-            segundos = (float)diferenca / CLOCKS_PER_SEC;
-            minutos = (int)(segundos / 60);
-            segundos -= (minutos) * 60;
-            if(minutos == 0){
-                printf("%.0f segundos!\n", segundos);
-            }
-            else if(minutos == 1){
-                printf("%d minuto e %.0f segundos!\n", minutos, segundos);
+        if(IsItIn(ID, &lista)){                                     //Se a mesa existir
+            cout << "Deseja mesmo remover essa mesa (0 - nao / 1 - sim)? ";
+            verifica = getEscolha(0, 1);
+            if(verifica){
+                if(Remove(ID, &lista)){                                 //Se a mesa for removida
+                cout << "Mesa removida!" << endl;
+                cout << "Tempo de espera da mesa: ";
+                diferenca = clock() - tempo;
+                segundos = (float)diferenca / CLOCKS_PER_SEC;
+                minutos = (int)(segundos / 60);
+                segundos -= (minutos) * 60;
+                if(minutos == 0){
+                    printf("%.0f segundos!\n", segundos);
+                }
+                else if(minutos == 1){
+                    printf("%d minuto e %.0f segundos!\n", minutos, segundos);
+                }
+                else{
+                    printf("%d minutos e %.0f segundos!\n", minutos, segundos);
+                }
+                }
+                else{                                                   //Se a mesa não for removida e o ID não existir
+                    cout << "ERRO: Nao foi possivel remover a mesa!" << endl;
+                }
             }
             else{
-                printf("%d minutos e %.0f segundos!\n", minutos, segundos);
+                cout << "Operacao cancelada!" << endl;
             }
         }
-        else if(IsItIn(ID, &lista)){                           //Se a mesa não for removida, mas o ID existe
-            cout << "ERRO: O ID informado existe, mas nao foi possivel remover a mesa!" << endl;
-        }
-        else{                                                   //Se a mesa não for removida e o ID não existir
-            cout << "ERRO: O ID informado nao existe, nao foi possivel remover a mesa" << endl;
+        else{
+            cout << "ERRO: O ID informado nao existe, nao foi possivel remover a mesa!" << endl;
         }
     }
 }
+
+/*
+else if(IsItIn(ID, &lista)){                           //Se a mesa não for removida, mas o ID existe
+            cout << "ERRO: O ID informado existe, mas nao foi possivel remover a mesa!" << endl;
+        }
+*/
 
 /*
 # ExibeMesas #
@@ -330,6 +391,48 @@ void restaurante::ExibeTempoMedioEspera(){
     else{
         printf("\nTempo medio de espera: %d minutos e %.0f segundos!\n", lista.current->info->getMediaMinutos(), lista.current->info->getMediaSegundos());
     }
+}
+
+/*
+# LimpaTela #
+Função: Limpa o console de acordo com a escolha do usuário
+Parâmetros: 
+    int seletor - Operação selecionada
+Valores de Retorno:
+    Nenhum
+*/
+void restaurante::LimpaTela(int seletor){
+    if(tela == 1 && seletor == 1){
+        system("cls");
+    }
+    else if(tela == 2 && seletor != 2){
+        system("cls");
+    }
+}
+
+/*
+# setTela #
+Função: Adiciona uma mesa ao restaurante
+Parâmetros: 
+    Nenhum
+Valores de Retorno:
+    Nenhum
+*/
+void restaurante::setTela(){
+    //Variáveis locais
+    int num;
+
+    //Coletando a opção do usuário
+    cout << endl << "Configuracoes de exibicao!" << endl;
+                  //"1: Menu de operacoes......................."
+    cout << endl << "0: Nunca limpar a tela..........................";
+    cout << endl << "1: Limpar a tela somente apos exibir o menu....";
+    cout << endl << "2: Limpar a tela apos toda operacao............" << endl;
+
+    cout << endl << "Informe a configuracao desejada: ";
+    tela = getEscolha(0, 2);
+
+    cout << endl << "Exibicao configurada!" << endl;
 }
 
 #endif
