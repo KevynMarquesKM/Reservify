@@ -11,11 +11,11 @@ class mesa{
         //Atributos
         const int IdMesa;
         const int QtdPessoas;
-        time_t TempoChegada;
-        time_t TempoEspera;
+        clock_t TempoChegada;
         static int GeradorId;
         static int MesasEsperando;
-        static time_t SomaEspera;
+        static int MediaMinutos;
+        static float MediaSegundos;
 
     public:
         //Construtor
@@ -27,29 +27,58 @@ class mesa{
         //Métodos
         int getId() const;
         int getPessoas() const;
-        time_t getChegada() const;
-        time_t getEspera() const;
+        clock_t getChegada() const;
         static int getMesasEsperando();
-        static time_t getSomaEspera();
-        const time_t * getPtrChegada() const;
+        static int getMediaMinutos();
+        static float getMediaSegundos();
         void resetGeradorId();
 };
 
 //Inicializações
 int mesa::GeradorId = 0;
 int mesa::MesasEsperando = 0;
-time_t mesa::SomaEspera = 0;
+int mesa::MediaMinutos = 0;
+float mesa::MediaSegundos = 0;
 
 //Construtor
-mesa::mesa(int cQtdPessoas = 0) : QtdPessoas(cQtdPessoas), TempoChegada(time(nullptr)), IdMesa(++GeradorId){
+mesa::mesa(int cQtdPessoas = 0) : QtdPessoas(cQtdPessoas), TempoChegada(clock()), IdMesa(++GeradorId){
     MesasEsperando++;
 }
 
 //Destrutor
 mesa::~mesa(){
-    TempoEspera = difftime(time(nullptr), TempoChegada);
-    SomaEspera = SomaEspera + TempoEspera;
+    //Declarações locais
+    int minutos;
+    float segundos;
+    clock_t diferenca;
+
     MesasEsperando--;
+
+    diferenca = clock() - TempoChegada;
+    segundos = (float)diferenca / CLOCKS_PER_SEC;
+    minutos = (int)(segundos / 60);
+    segundos -= (minutos) * 60;
+
+    if((getMediaMinutos() == 0) & (getMediaSegundos() == 0)){
+        MediaMinutos = minutos;
+        MediaSegundos = segundos;
+    }
+    else{
+        if((MediaMinutos + minutos) % 2 == 0){
+            MediaMinutos = (MediaMinutos + minutos) / 2;
+            MediaSegundos = (MediaSegundos + segundos) / 2;
+        }
+        else{
+            if(((MediaSegundos + segundos) / 2) > 29){
+                MediaMinutos = ((MediaMinutos + minutos) / 2);
+                MediaSegundos = ((MediaSegundos + segundos) / 2) + 30;
+            }
+            else{
+                MediaMinutos = ((MediaMinutos + minutos) / 2) + 1;
+                MediaSegundos = ((MediaSegundos + segundos) / 2) - 30;
+            }
+        }
+    }
 }
 
 //Métodos get
@@ -61,24 +90,20 @@ int mesa::getPessoas() const{
     return QtdPessoas;
 }
 
-time_t mesa::getChegada() const{
+clock_t mesa::getChegada() const{
     return TempoChegada;
-}
-
-time_t mesa::getEspera() const{
-    return TempoEspera;
 }
 
 int mesa::getMesasEsperando(){
     return MesasEsperando;
 }
 
-time_t mesa::getSomaEspera(){
-    return SomaEspera;
+int mesa::getMediaMinutos(){
+    return MediaMinutos;
 }
 
-const time_t * mesa::getPtrChegada() const{
-    return &TempoChegada;
+float mesa::getMediaSegundos(){
+    return MediaSegundos;
 }
 
 void mesa::resetGeradorId(){
