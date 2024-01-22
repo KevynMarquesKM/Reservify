@@ -3,8 +3,6 @@
 #include <string>
 #include <ctime>
 #include "restaurante.hpp"
-//#include "C:\Users\UFSCar\Documents\Codigos\AED\mesa.hpp"
-//#include "C:\Users\UFSCar\Documents\Codigos\AED\lista.hpp"
 using namespace std;
 
 //Função main
