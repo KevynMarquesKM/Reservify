@@ -14,6 +14,11 @@ int main(){
     restaurante rest;
 
     tempo = time(nullptr);
+
+    diov = system("cls");
+    (void)diov;
+
+    cout << endl;
     cout << "  BBBBB   EEEEE  M     M     VV   VV  III  N     N   DDDD   OOO  " << endl;
     cout << "  B    B  E      MM   MM      V   V    I   N N   N   D   D O   O " << endl;
     cout << "  BBBBB   EEEE   M M M M  ==   V V     I   N  N  N   D   D O   O " << endl;
@@ -34,7 +39,7 @@ int main(){
     cout << "" << endl;
     do{
         tempoC = time(nullptr);
-    }while(tempoC - tempo < 7);
+    }while(tempoC - tempo < 5);
     diov = system("cls");
     (void)diov;
 
