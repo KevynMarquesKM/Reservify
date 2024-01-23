@@ -11,7 +11,9 @@ class mesa{
         //Atributos
         const int IdMesa;
         const int QtdPessoas;
+        const string Nome;
         clock_t TempoChegada;
+        tm * DataChegada;
         static int GeradorId;
         static int MesasEsperando;
         static int MediaMinutos;
@@ -19,7 +21,7 @@ class mesa{
 
     public:
         //Construtor
-        mesa(int);
+        mesa(int, string);
 
         //Destrutor
         ~mesa();
@@ -27,7 +29,9 @@ class mesa{
         //Métodos
         int getId() const;
         int getPessoas() const;
+        string getNome() const;
         clock_t getChegada() const;
+        tm * getDataChegada() const;
         static int getMesasEsperando();
         static int getMediaMinutos();
         static float getMediaSegundos();
@@ -41,8 +45,11 @@ int mesa::MediaMinutos = 0;
 float mesa::MediaSegundos = 0;
 
 //Construtor
-mesa::mesa(int cQtdPessoas = 0) : QtdPessoas(cQtdPessoas), TempoChegada(clock()), IdMesa(++GeradorId){
+mesa::mesa(int cQtdPessoas = 0, string cNome = "Indefinido") : QtdPessoas(cQtdPessoas), TempoChegada(clock()), IdMesa(++GeradorId), Nome(cNome){
+    time_t tempo = time(0);
+
     MesasEsperando++;
+    DataChegada = localtime(&tempo);
 }
 
 //Destrutor
@@ -79,8 +86,16 @@ int mesa::getPessoas() const{
     return QtdPessoas;
 }
 
+string mesa::getNome() const{
+    return Nome;
+}
+
 clock_t mesa::getChegada() const{
     return TempoChegada;
+}
+
+tm * mesa::getDataChegada() const{
+    return DataChegada;
 }
 
 int mesa::getMesasEsperando(){

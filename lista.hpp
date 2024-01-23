@@ -109,7 +109,7 @@ Valores de Retorno:
     bool true - Se a inserção ocorrer
     bool false - Se a inserção não ocorrer
 */
-bool Insert(int qtd, list *list){
+bool Insert(int qtd, string nome, list *list){
     //Variáveis locais
     node *Paux;
 
@@ -123,7 +123,7 @@ bool Insert(int qtd, list *list){
     }
     else{
         //O campo info de Paux aponta para uma nova mesa com a quantidade de pessoas informada
-        Paux->info = new mesa(qtd);
+        Paux->info = new mesa(qtd, nome);
         //O campo next de Paux passa a apontar para o primeiro elemento da lista
         Paux->next = list->first;
         //O primeiro elemento da lista passa a ser Paux
