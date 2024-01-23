@@ -103,7 +103,7 @@ Valores de Retorno:
 void restaurante::PerfilOperador(){
     //Variáveis locais
     int seletor;
-    int diov;
+    int diov, verifica;
     clock_t tempoF, tempoC;
 
     //Exibindo o menu de ações disponíveis
@@ -149,9 +149,18 @@ void restaurante::PerfilOperador(){
             break;
         case 8:
             LimpaTela(seletor);
-            cout << "Reset realizado!" << endl;
-            lista.first->info->resetGeradorId();
-            Destroy(&lista);
+            cout << "Deseja mesmo realizar o reset (0 - nao / 1 - sim)? ";
+            verifica = getEscolha(0, 1);
+            if(verifica){
+                cout << "Reset realizado!" <<  endl;
+                if(!(lista.first == NULL)){
+                    lista.first->info->resetGeradorId();
+                    Destroy(&lista);
+                }
+            }
+            else{
+                cout << "Operacao cancelada!" << endl;
+            }
             break;
         case 9:
             LimpaTela(seletor);
@@ -166,28 +175,28 @@ void restaurante::PerfilOperador(){
 
             do{
                 tempoC = time(nullptr);
-            }while(tempoC - tempoF < 1.5);
+            }while(tempoC - tempoF < 1);
 
             diov = system("cls");
             (void)diov;
             cout << endl << "Encerrando em 2!";
             do{
                 tempoC = time(nullptr);
-            }while(tempoC - tempoF < 3);
+            }while(tempoC - tempoF < 2);
 
             diov = system("cls");
             (void)diov;
             cout << endl << "Encerrando em 1!";
             do{
                 tempoC = time(nullptr);
-            }while(tempoC - tempoF < 4);
+            }while(tempoC - tempoF < 3);
 
             diov = system("cls");
             (void)diov;
             cout << endl << "Encerrando em 0!";
             do{
                 tempoC = time(nullptr);
-            }while(tempoC - tempoF < 4.25);
+            }while(tempoC - tempoF < 3.25);
             diov = system("cls");
             (void)diov;
             break;
@@ -263,7 +272,6 @@ void restaurante::RemoveMesa(){
             cout << "Deseja mesmo remover essa mesa (0 - nao / 1 - sim)? ";
             verifica = getEscolha(0, 1);
             if(verifica){
-                if(Remove(ID, &lista)){                                 //Se a mesa for removida
                 cout << "Mesa removida!" << endl;
                 cout << "Nome vinculado a mesa: " << lista.current->info->getNome() << "!" << endl;
                 cout << "Data do registro: " << lista.current->info->getDataChegada()->tm_mday;
@@ -277,6 +285,7 @@ void restaurante::RemoveMesa(){
                 segundos = (float)diferenca / CLOCKS_PER_SEC;
                 minutos = (int)(segundos / 60);
                 segundos -= (minutos) * 60;
+                if(Remove(ID, &lista)){                                 //Se a mesa for removida
                 if(minutos == 0){
                     printf("%.0f segundos!\n", segundos);
                 }
@@ -300,12 +309,6 @@ void restaurante::RemoveMesa(){
         }
     }
 }
-
-/*
-else if(IsItIn(ID, &lista)){                           //Se a mesa não for removida, mas o ID existe
-            cout << "ERRO: O ID informado existe, mas nao foi possivel remover a mesa!" << endl;
-        }
-*/
 
 /*
 # ExibeMesas #
