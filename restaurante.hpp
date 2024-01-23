@@ -103,6 +103,7 @@ Valores de Retorno:
 void restaurante::PerfilOperador(){
     //Variáveis locais
     int seletor;
+    int diov;
     clock_t tempoF, tempoC;
 
     //Exibindo o menu de ações disponíveis
@@ -157,33 +158,38 @@ void restaurante::PerfilOperador(){
             setTela();
             break;
         default:
-            system("cls");
+            diov = system("cls");
+            (void)diov;
             Destroy(&lista);
             cout << endl << "Encerrando em 3!";
             tempoF = time(nullptr);
 
             do{
                 tempoC = time(nullptr);
-            }while(tempoC - tempoF < 2);
+            }while(tempoC - tempoF < 1.5);
 
-            system("cls");
+            diov = system("cls");
+            (void)diov;
             cout << endl << "Encerrando em 2!";
             do{
                 tempoC = time(nullptr);
             }while(tempoC - tempoF < 3);
 
-            system("cls");
+            diov = system("cls");
+            (void)diov;
             cout << endl << "Encerrando em 1!";
             do{
                 tempoC = time(nullptr);
             }while(tempoC - tempoF < 4);
 
-            system("cls");
+            diov = system("cls");
+            (void)diov;
             cout << endl << "Encerrando em 0!";
             do{
                 tempoC = time(nullptr);
             }while(tempoC - tempoF < 4.25);
-            system("cls");
+            diov = system("cls");
+            (void)diov;
             break;
         }
     }while(seletor != 10);
@@ -425,11 +431,16 @@ Valores de Retorno:
     Nenhum
 */
 void restaurante::LimpaTela(int seletor){
+    //Declarações locais
+    int diov;
+
     if(tela == 1 && seletor == 1){
-        system("cls");
+        diov = system("cls");
+        (void)diov;
     }
     else if(tela == 2 && seletor != 2){
-        system("cls");
+        diov = system("cls");
+        (void)diov;
     }
 }
 
@@ -442,9 +453,6 @@ Valores de Retorno:
     Nenhum
 */
 void restaurante::setTela(){
-    //Variáveis locais
-    int num;
-
     //Coletando a opção do usuário
     cout << endl << "Configuracoes de exibicao!" << endl;
     cout << endl << "0: Nunca limpar a tela..........................";
