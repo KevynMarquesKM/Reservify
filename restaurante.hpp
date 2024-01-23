@@ -200,14 +200,23 @@ Valores de Retorno:
 void restaurante::AdicionaMesa(){
     //Variáveis locais
     int num;
+    string nome;
 
-    //Coletando a quantidade de pessoas da mesa
+    //Coletando a quantidade de pessoas da mesa e o nome da comanda
     cout << endl <<"Adicionando uma mesa!" << endl;
     cout << "Informe a quantidade de pessoas da mesa: ";
     cin >> num;
+    cout << "Informe o nome a ser vinculado a mesa: ";
+    cin >> nome;
 
-    if(Insert(num, &lista)){                                //Se a inserção for bem sucedida
+    if(Insert(num, nome, &lista)){                                //Se a inserção for bem sucedida
         cout << "Mesa adicionada!" << endl;
+        cout << "Data do registro: " << lista.first->info->getDataChegada()->tm_mday;
+        cout << "/" << lista.first->info->getDataChegada()->tm_mon + 1;
+        cout << "/" << lista.first->info->getDataChegada()->tm_year + 1900;
+        cout << " as " << lista.first->info->getDataChegada()->tm_hour;
+        cout << ":" << lista.first->info->getDataChegada()->tm_min;
+        cout << "!" << endl;
     }
     else{                                                   //Se a inserção não for bem sucedida
         cout << "ERRO: Nao foi possivel adicionar a mesa!" << endl;
@@ -250,6 +259,13 @@ void restaurante::RemoveMesa(){
             if(verifica){
                 if(Remove(ID, &lista)){                                 //Se a mesa for removida
                 cout << "Mesa removida!" << endl;
+                cout << "Nome vinculado a mesa: " << lista.current->info->getNome() << "!" << endl;
+                cout << "Data do registro: " << lista.current->info->getDataChegada()->tm_mday;
+                cout << "/" << lista.current->info->getDataChegada()->tm_mon + 1;
+                cout << "/" << lista.current->info->getDataChegada()->tm_year + 1900;
+                cout << " as " << lista.current->info->getDataChegada()->tm_hour;
+                cout << ":" << lista.current->info->getDataChegada()->tm_min;
+                cout << "!" << endl;
                 cout << "Tempo de espera da mesa: ";
                 diferenca = clock() - tempo;
                 segundos = (float)diferenca / CLOCKS_PER_SEC;
@@ -305,6 +321,7 @@ void restaurante::ExibeMesas(){
         cout << endl << "Exibindo todas as " << lista.first->info->getMesasEsperando() << " mesas registradas!" << endl;
         do{
             cout << endl << "Mesa ID: " << lista.current->info->getId() << endl;
+            cout << "Nome vinculado a mesa: " << lista.current->info->getNome() << "!" << endl;
             cout << "Quantidade de pessoas: " << lista.current->info->getPessoas() << endl;
             cout << "Tempo de espera da mesa: ";
             tempo = lista.current->info->getChegada();
@@ -321,6 +338,12 @@ void restaurante::ExibeMesas(){
             else{
                 printf("%d minutos e %.0f segundos!\n", minutos, segundos);
             }
+            cout << "Data do registro: " << lista.current->info->getDataChegada()->tm_mday;
+            cout << "/" << lista.current->info->getDataChegada()->tm_mon + 1;
+            cout << "/" << lista.current->info->getDataChegada()->tm_year + 1900;
+            cout << " as " << lista.current->info->getDataChegada()->tm_hour;
+            cout << ":" << lista.current->info->getDataChegada()->tm_min;
+            cout << "!" << endl;
         }while(TakeNext(&ID, &lista));          //Enquanto houver mesas
     }
     else{                                       //Se não houver mesas
@@ -424,10 +447,9 @@ void restaurante::setTela(){
 
     //Coletando a opção do usuário
     cout << endl << "Configuracoes de exibicao!" << endl;
-                  //"1: Menu de operacoes......................."
     cout << endl << "0: Nunca limpar a tela..........................";
-    cout << endl << "1: Limpar a tela somente apos exibir o menu....";
-    cout << endl << "2: Limpar a tela apos toda operacao............" << endl;
+    cout << endl << "1: Limpar a tela somente apos exibir o menu.....";
+    cout << endl << "2: Limpar a tela apos toda operacao............." << endl;
 
     cout << endl << "Informe a configuracao desejada: ";
     tela = getEscolha(0, 2);
