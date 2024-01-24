@@ -10,13 +10,11 @@ int main(){
     //Variáveis locais
     clock_t tempo;
     clock_t tempoC;
-    int diov;
     restaurante rest;
 
     tempo = time(nullptr);
 
-    diov = system("cls");
-    (void)diov;
+    system("cls");
 
     cout << endl;
     cout << "  BBBBB   EEEEE  M     M     VV   VV  III  N     N   DDDD   OOO  " << endl;
@@ -40,8 +38,7 @@ int main(){
     do{
         tempoC = time(nullptr);
     }while(tempoC - tempo < 5);
-    diov = system("cls");
-    (void)diov;
+    system("cls");
 
     rest.PerfilOperador();
 

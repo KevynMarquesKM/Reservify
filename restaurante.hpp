@@ -103,7 +103,7 @@ Valores de Retorno:
 void restaurante::PerfilOperador(){
     //Variáveis locais
     int seletor;
-    int diov, verifica;
+    int verifica;
     clock_t tempoF, tempoC;
 
     //Exibindo o menu de ações disponíveis
@@ -167,8 +167,7 @@ void restaurante::PerfilOperador(){
             setTela();
             break;
         default:
-            diov = system("cls");
-            (void)diov;
+            system("cls");
             Destroy(&lista);
             cout << endl << "Encerrando em 3!";
             tempoF = time(nullptr);
@@ -177,28 +176,24 @@ void restaurante::PerfilOperador(){
                 tempoC = time(nullptr);
             }while(tempoC - tempoF < 1);
 
-            diov = system("cls");
-            (void)diov;
+            system("cls");
             cout << endl << "Encerrando em 2!";
             do{
                 tempoC = time(nullptr);
             }while(tempoC - tempoF < 2);
 
-            diov = system("cls");
-            (void)diov;
+            system("cls");
             cout << endl << "Encerrando em 1!";
             do{
                 tempoC = time(nullptr);
             }while(tempoC - tempoF < 3);
 
-            diov = system("cls");
-            (void)diov;
+            system("cls");
             cout << endl << "Encerrando em 0!";
             do{
                 tempoC = time(nullptr);
             }while(tempoC - tempoF < 3.25);
-            diov = system("cls");
-            (void)diov;
+            system("cls");
             break;
         }
     }while(seletor != 10);
@@ -435,15 +430,12 @@ Valores de Retorno:
 */
 void restaurante::LimpaTela(int seletor){
     //Declarações locais
-    int diov;
 
     if(tela == 1 && seletor == 1){
-        diov = system("cls");
-        (void)diov;
+        system("cls");
     }
     else if(tela == 2 && seletor != 2){
-        diov = system("cls");
-        (void)diov;
+        system("cls");
     }
 }
 
