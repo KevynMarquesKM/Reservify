@@ -25,5 +25,5 @@ The program is basically based on a simple cadastral list as data structure.
 
 **General Overview of the Structures**
 
-<img src="Media/image_overview_structures.png" alt="Diagrama do Esquema Geral" width="50%">
+<img src="media/image_overview_structures.png" alt="Diagrama do Esquema Geral" width="50%">
 
